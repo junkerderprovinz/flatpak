@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner-dark.png">
-    <img src="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner.png" alt="Junker der Provinz on Flatpak" width="100%">
+    <img src="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner.png" alt="Flatpak Repo" width="100%">
   </picture>
 </p>
 
