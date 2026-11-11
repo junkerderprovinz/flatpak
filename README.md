@@ -1,7 +1,8 @@
-<h1 align="center">Junker der Provinz on Flatpak</h1>
-
 <p align="center">
-  <img src="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner.png" alt="Junker der Provinz" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner-dark.png">
+    <img src="https://raw.githubusercontent.com/junkerderprovinz/flatpak/main/.github/assets/flatpak-banner.png" alt="Junker der Provinz on Flatpak" width="100%">
+  </picture>
 </p>
 
 <p align="center">
@@ -14,10 +15,6 @@
 
 <p align="center">
 Hi! This repository builds the Flatpak repository for my desktop apps. Add it once, and new versions come in through <code>flatpak update</code> or your software center like any other app. Every app is on <a href="https://junkerderprovinz.github.io/flatpak/">the page</a>, ready to install.
-</p>
-
-<p align="center">
-  <a href="https://buymeacoffee.com/junkerderprovinz"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/give.svg#svgView(viewBox(0,0,841.9,245.3))" alt="Buy me a coffee" width="160" height="46.62"></a>
 </p>
 
 <br>
