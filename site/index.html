@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Junker der Provinz Flatpak</title>
+  <meta name="description" content="Install the desktop apps by Junker der Provinz with Flatpak and get every update through flatpak update or your software center.">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --fg: #1f1d1a;
+      --muted: #5f5a52;
+      --card: #ffffff;
+      --line: #e2ded5;
+      --code: #efece5;
+      --accent: #2f6f4f;
+      --accent-fg: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #171614;
+        --fg: #ece9e3;
+        --muted: #a39d93;
+        --card: #211f1c;
+        --line: #35322d;
+        --code: #2a2824;
+        --accent: #6fbf94;
+        --accent-fg: #10140f;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.55 system-ui, sans-serif;
+    }
+    main { max-width: 44rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .75rem; }
+    h2 { font-size: 1.15rem; margin: 2.5rem 0 .5rem; }
+    h3 { font-size: 1.05rem; margin: 0 0 .5rem; }
+    p { margin: 0 0 1rem; }
+    .muted { color: var(--muted); }
+    a { color: var(--accent); }
+    pre {
+      margin: 0 0 1rem;
+      padding: .75rem 1rem;
+      background: var(--code);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    code { font: .9rem/1.5 ui-monospace, monospace; }
+    ul.apps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+    ul.apps li {
+      padding: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    ul.apps p { margin: 0; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .button {
+      display: inline-block;
+      padding: .45rem 1.1rem;
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .fingerprint { word-break: break-all; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Junker der Provinz on Flatpak</h1>
+    <p>Hi there! This is where my desktop apps live as Flatpaks. Add the repository once, and every new version reaches you through <code>flatpak update</code> or your software center, just like the rest of your apps.</p>
+
+    <h2>Add the repository</h2>
+    <pre><code>flatpak remote-add --user --if-not-exists junkerderprovinz @BASE_URL@/junkerderprovinz.flatpakrepo</code></pre>
+    <p>The apps run on the GNOME runtime from Flathub. Most systems have Flathub already. If yours doesn't, add it first:</p>
+    <pre><code>flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo</code></pre>
+
+    <h2>Install an app</h2>
+    <p>Copy the command, or click Install and your software center takes it from there. The button sets up both repositories for you, so it works without the commands above.</p>
+    <ul class="apps"><!-- apps -->
+    </ul>
+
+    <h2>Updates</h2>
+    <p>Run <code>flatpak update</code> whenever you like, or let your software center do it for you. If a new version gives you trouble, the one before it is still here, and <code>flatpak remote-info --log junkerderprovinz &lt;app ID&gt;</code> shows the commit to go back to with <code>flatpak update --commit=&lt;commit&gt; &lt;app ID&gt;</code>.</p>
+
+    <h2>Signing key</h2>
+    <p>Everything here is signed, and Flatpak checks the signature on every install and update. The key's fingerprint:</p>
+    <p class="fingerprint"><code>@FINGERPRINT@</code></p>
+
+    <p class="muted">Something not working? I'd love to hear about it in the app's issues. Thanks for stopping by!</p>
+  </main>
+</body>
+</html>

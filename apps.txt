@@ -1,0 +1,7 @@
+# One app per line: its repository, its app ID and the name people see.
+# Every release of the repository must carry <repo>-linux-amd64.flatpak and
+# <repo>-linux-arm64.flatpak. A fourth column holds the app at that tag
+# instead of following the newest release.
+#
+# repository                    app ID                                  name
+junkerderprovinz/arrowloop      io.github.junkerderprovinz.arrowloop    ArrowLoop

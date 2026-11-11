@@ -1,0 +1,63 @@
+name: Publish
+
+# Builds the repository from the newest release of every app in apps.txt and
+# puts it on Pages. An app's release workflow sends the dispatch, and the
+# weekly run picks up a release whose dispatch got lost.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [release]
+  schedule:
+    - cron: "23 4 * * 1"
+
+permissions:
+  contents: read
+
+# Every build starts from what the one before it published, so two runs must
+# never overlap, and a waiting one must not be cancelled either.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # The same image the apps build their bundles in, with flatpak and ostree.
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51@sha256:78d969b18225ae107ca29497bf09c4a3f791e5f1838a9a912a529d0024fb6210
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Import the signing key
+        env:
+          SIGNING_KEY: ${{ secrets.FLATPAK_SIGNING_KEY }}
+        run: |
+          set -eu
+          home="$RUNNER_TEMP/gnupg"
+          install -d -m 700 "$home"
+          printf '%s\n' "$SIGNING_KEY" | GNUPGHOME="$home" gpg --batch --import
+          echo "GNUPGHOME=$home" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: ./build.sh public
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
