@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-Hi! This repository builds the Flatpak repository for my desktop apps. Add it once, and new versions come in through <code>flatpak update</code> or your software center like any other app. Every app is on <a href="https://junkerderprovinz.github.io/flatpak/">the page</a>, ready to install.
+This repository builds the Flatpak repository for my desktop apps. Add it once, and new versions come in through <code>flatpak update</code> or your software center like any other app. Every app is on <a href="https://junkerderprovinz.github.io/flatpak/">the page</a>, ready to install.
 </p>
 
 <br>
