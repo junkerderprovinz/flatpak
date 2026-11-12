@@ -5,3 +5,4 @@
 #
 # repository                    app ID                                  name
 junkerderprovinz/arrowloop      io.github.junkerderprovinz.arrowloop    ArrowLoop
+junkerderprovinz/trickwork      io.github.junkerderprovinz.trickwork    TrickWork
