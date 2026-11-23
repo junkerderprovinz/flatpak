@@ -5,10 +5,11 @@
  * name 132, claim 44, mark-to-text gap 70, name-to-claim gap 8.
  *
  * The mark is Flatpak's (CC BY 3.0, flatpak.org/press), path from Simple Icons.
- * Fonts (OFL) are fetched to the OS temp dir at runtime.
+ * The name is set in Bree Serif Light and the claim in Bree Light, read as TTF
+ * from HOUSE_FONTS (default %LOCALAPPDATA%\halleluja-fonts).
  * Deps (global): @resvg/resvg-js, opentype.js. Run: node .github/assets/gen-banner.mjs
  */
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -42,22 +43,14 @@ const LX = 165 - (ink.x - vbX) * scale;
 const LY = 250 - ((ink.y - vbY) + ink.height / 2) * scale;
 const textX = 165 + ink.width * scale + gap;
 
-async function getFont(file, url) {
-  const p = join(tmpdir(), file);
-  if (!existsSync(p)) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`font fetch ${res.status} ${url}`);
-    writeFileSync(p, Buffer.from(await res.arrayBuffer()));
-  }
-  const b = readFileSync(p);
-  return opentype.parse(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength));
-}
-const bree = await getFont("Flatpak-BreeSerif-Regular.ttf", "https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf");
-const lato = await getFont("Flatpak-Lato-Regular.ttf", "https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf");
+// The house typeface is licensed, so it is read from a local folder and never committed.
+const fonts = process.env.HOUSE_FONTS ?? join(process.env.LOCALAPPDATA ?? tmpdir(), "halleluja-fonts");
+const bree = opentype.parse(readFileSync(join(fonts, "bree-serif-light.ttf")).buffer);
+const claimFont = opentype.parse(readFileSync(join(fonts, "bree-light.ttf")).buffer);
 
 const nameAsc = bree.ascender * (nameSize / bree.unitsPerEm);
 const nameDesc = -bree.descender * (nameSize / bree.unitsPerEm);
-const claimAsc = lato.ascender * (claimSize / lato.unitsPerEm);
+const claimAsc = claimFont.ascender * (claimSize / claimFont.unitsPerEm);
 const blockH = nameAsc + nameDesc + lineGap + claimAsc;
 const nameBaseline = H / 2 - blockH / 2 + nameAsc;
 const claimBaseline = nameBaseline + nameDesc + lineGap + claimAsc;
@@ -80,7 +73,7 @@ function glyphs(font, text, size) {
 }
 const paint = (gl, y, fill) =>
   gl.map((g) => `<path transform="translate(${g.x.toFixed(2)},${y.toFixed(2)})" d="${g.d}" fill="${fill}"/>`).join("\n    ");
-const rightEdge = textX + Math.max(bree.getAdvanceWidth(NAME, nameSize), lato.getAdvanceWidth(CLAIM, claimSize));
+const rightEdge = textX + Math.max(bree.getAdvanceWidth(NAME, nameSize), claimFont.getAdvanceWidth(CLAIM, claimSize));
 if (W - rightEdge < 120) throw new Error(`right margin ${(W - rightEdge).toFixed(0)}px, house minimum is 120`);
 
 const placed = mark.replace(/<svg\b[^>]*>/,
@@ -91,7 +84,7 @@ for (const t of THEMES) {
   ${placed.trim()}
   <g transform="translate(${textX.toFixed(2)},0)">
     ${paint(glyphs(bree, NAME, nameSize), nameBaseline, t.name)}
-    ${paint(glyphs(lato, CLAIM, claimSize), claimBaseline, t.claim)}
+    ${paint(glyphs(claimFont, CLAIM, claimSize), claimBaseline, t.claim)}
   </g>
 </svg>
 `;
